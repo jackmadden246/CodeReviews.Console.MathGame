@@ -1,10 +1,8 @@
-﻿// See https://aka.ms/new-console-template for more information
+// See https://aka.ms/new-console-template for more information
 
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Data;
-using System.Numerics;
-using System.Security.Cryptography;
 using static System.Net.Mime.MediaTypeNames;
 
 Random random = new Random();
@@ -157,7 +155,7 @@ void GameStatistics()
     Console.WriteLine($"You took {elapsedTime.ToString()} seconds to complete the game");
 
 }
-int SelectCustomGame()
+void SelectCustomGame()
 {
     int result = 0;
     int a = 0;
@@ -277,9 +275,8 @@ int SelectCustomGame()
         }
     }
     finalResult = result;
-    return result;
 }
-int SelectRandomGame()
+void SelectRandomGame()
 {
     int result = 0;
     int a = 0;
@@ -386,9 +383,8 @@ int SelectRandomGame()
             break;
     }
     finalResult = result;
-    return result;
 }
-string ChooseDifficulty()
+void ChooseDifficulty()
 {
     Console.WriteLine("Please choose from the following difficulty options: ");
     Console.WriteLine("1. Easy");
@@ -402,7 +398,6 @@ string ChooseDifficulty()
             Console.WriteLine("Invalid difficulty mode selected. Please try again.");
         }
     }
-    return difficultyMode;
 }
 void ContinueGame()
 {
@@ -415,23 +410,30 @@ void ContinueGame()
     {
         Console.WriteLine("I am sorry, you have lost this game. Would you like to continue playing Y/N");
     }
+    continueGame = Console.ReadLine().ToUpper();
+    if (continueGame == "Y")
+    {
+        Console.WriteLine("Great! Let's play again!");
+        SelectGameType();
+        GameStatistics();
+        ContinueGame();
+    }
+    else if (continueGame == "N")
     {
         do
         {
             continueGame = Console.ReadLine().ToUpper();
             if (continueGame == "N")
-            {
-                Console.WriteLine("Thank you for playing! Goodbye!");
-                Environment.Exit(0);
-            }
-            SelectGameType();
-            GameStatistics();
-            ContinueGame();
+                {
+                    Console.WriteLine("Thank you for playing! Goodbye!");
+                    Environment.Exit(0);
+                }
+                SelectGameType();
+                GameStatistics();
+                ContinueGame();
 
-        }
-        while (continueGame != "Y" || continueGame != "N");
     }
-
+    while (continueGame != "N");
 }
 
 
