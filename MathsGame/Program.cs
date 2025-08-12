@@ -24,7 +24,17 @@ SelectGameType();
 GameStatistics();
 ContinueGame();
 
+/* helper method to generate division operands based on difficulty. 
+ * Uses C# tuple syntax with three values : dividend, divisor, and quotient to declare the return type is a tuple. 
+ * Alongside the parameters maxDividend and maxDivisor to set the range of the random numbers.*/
 
+(int dividend, int divisor, int quotient) GenerateDivisionOperands(int maxDividend, int maxDivisor)
+{
+    int divisor = random.Next(1, maxDivisor + 1);
+    int quotient = random.Next(1, maxDividend / Math.Max(divisor, 1) + 1);
+    int dividend = divisor * quotient;
+    return (dividend, divisor, quotient);
+}
 void SelectGameType()
 {
     Console.WriteLine("Would you like to play a custom or random game? C/R");
@@ -47,7 +57,7 @@ void SelectGameType()
 }
 void RandomGame()
 
-{ 
+{
     Console.WriteLine("Welcome to Jack's Math Game!");
     Console.WriteLine("Please guess the correct result of two random numbers depending on the random operation selected");
     ChooseDifficulty();
@@ -65,8 +75,8 @@ void CustomGame()
     Console.WriteLine("3: Multiply");
     Console.WriteLine("4: Divide ");
     SelectCustomGame();
-    
-    
+
+
 
 }
 
@@ -152,32 +162,26 @@ int SelectCustomGame()
     int result = 0;
     int a = 0;
     int b = 0;
-    if (difficultyMode == "1")
-    {
-        a = random.Next(1, 11); // Generates a random number between 1 and 10
-        b = random.Next(1, 11); // Generates a random number between 1 and 10
-    }
-    else if (difficultyMode == "2")
-    {
-        a = random.Next(1, 51); // Generates a random number between 1 and 50
-        b = random.Next(1, 51); // Generates a random number between 1 and 50
-    }
-    else if (difficultyMode == "3")
-    {
-        a = random.Next(1, 101); // Generates a random number between 1 and 100
-        b = random.Next(1, 101); // Generates a random number between 1 and 100
-    }
-    else
-    {
-        Console.WriteLine("Invalid difficulty mode selected. Please try again.");
-    }
     gameSelector = Console.ReadLine();
+
     if (gameSelector != null)
     {
 
         switch (gameSelector)
         {
             case "1":
+                a = random.Next(1, 11); // Generates a random number between 1 and 10
+                b = random.Next(1, 11); // Generates a random number between 1 and 10
+                if (difficultyMode == "2")
+                {
+                    a = random.Next(1, 51); // Generates a random number between 1 and 50
+                    b = random.Next(1, 51); // Generates a random number between 1 and 50
+                }
+                else if (difficultyMode == "3")
+                {
+                    a = random.Next(1, 101); // Generates a random number between 1 and 100
+                    b = random.Next(1, 101); // Generates a random number between 1 and 100
+                }
                 Console.WriteLine($"Welcome to the Addition Game! The numbers are {a} and {b}.");
                 result = a + b;
                 Console.WriteLine($"{a} + {b} = ?");
@@ -189,6 +193,22 @@ int SelectCustomGame()
                 }
                 break;
             case "2":
+                a = random.Next(1, 11); // Generates a random number between 1 and 10
+                b = random.Next(1, 11); // Generates a random number between 1 and 10
+                if (difficultyMode == "2")
+                {
+                    a = random.Next(1, 51); // Generates a random number between 1 and 50
+                    b = random.Next(1, 51); // Generates a random number between 1 and 50
+                }
+                else if (difficultyMode == "3")
+                {
+                    a = random.Next(1, 101); // Generates a random number between 1 and 100
+                    b = random.Next(1, 101); // Generates a random number between 1 and 100
+                }
+                else
+                {
+                    Console.WriteLine("Invalid difficulty mode selected. Please try again.");
+                }
                 result = a - b;
 
                 if (a < b)
@@ -205,6 +225,18 @@ int SelectCustomGame()
                 }
                 break;
             case "3":
+                a = random.Next(1, 11); // Generates a random number between 1 and 10
+                b = random.Next(1, 11); // Generates a random number between 1 and 10
+                if (difficultyMode == "2")
+                {
+                    a = random.Next(1, 51); // Generates a random number between 1 and 50
+                    b = random.Next(1, 51); // Generates a random number between 1 and 50
+                }
+                else if (difficultyMode == "3")
+                {
+                    a = random.Next(1, 101); // Generates a random number between 1 and 100
+                    b = random.Next(1, 101); // Generates a random number between 1 and 100
+                }
                 Console.WriteLine($"Welcome to the Multiplication Game! The numbers are {a} and {b}.");
                 result = a * b;
                 Console.WriteLine($"{a} * {b} = ?");
@@ -216,13 +248,21 @@ int SelectCustomGame()
                 }
                 break;
             case "4":
-                Console.WriteLine($"Welcome to the Division Game! The numbers are {a} and {b}.");
-                if (b > a)
+                int maxDividend = 100;
+                int maxDivisor = 10;
+                if (difficultyMode == "2")
                 {
-                    b = a;
-                    a = b;
+                    maxDivisor = 50;
                 }
-                result = a / b;
+                else if (difficultyMode == "3")
+                {
+                    maxDivisor = 100;
+                }
+                var (dividend, divisor, quotient) = GenerateDivisionOperands(maxDividend, maxDivisor);
+                a = dividend;
+                b = divisor;
+                result = quotient;
+                Console.WriteLine($"Welcome to the Division Game! The numbers are {a} and {b}.");
                 Console.WriteLine($"{a} / {b} = ?");
                 Console.WriteLine("Please enter your guess: ");
                 guess = Console.ReadLine();
@@ -230,7 +270,6 @@ int SelectCustomGame()
                 {
                     Console.WriteLine("Invalid input. Please enter a valid number.");
                 }
-
                 break;
             default:
                 Console.WriteLine("Invalid selection. Please try again.");
@@ -245,29 +284,26 @@ int SelectRandomGame()
     int result = 0;
     int a = 0;
     int b = 0;
-    if (difficultyMode == "1")
-    {
-        a = random.Next(1, 11); // Generates a random number between 1 and 10
-        b = random.Next(1, 11); // Generates a random number between 1 and 10
-    }
-    else if (difficultyMode == "2")
-    {
-        a = random.Next(1, 51); // Generates a random number between 1 and 50
-        b = random.Next(1, 51); // Generates a random number between 1 and 50
-    }
-    else if (difficultyMode == "3")
-    {
-        a = random.Next(1, 101); // Generates a random number between 1 and 100
-        b = random.Next(1, 101); // Generates a random number between 1 and 100
-    }
-    else
-    {
-        Console.WriteLine("Invalid difficulty mode selected. Please try again.");
-    }
     int gameSelector = random.Next(1, 5); // Randomly selects a game between 1 and 4
     switch (gameSelector)
     {
         case 1:
+            a = random.Next(1, 11); // Generates a random number between 1 and 10
+            b = random.Next(1, 11); // Generates a random number between 1 and 10
+            if (difficultyMode == "2")
+            {
+                a = random.Next(1, 51); // Generates a random number between 1 and 50
+                b = random.Next(1, 51); // Generates a random number between 1 and 50
+            }
+            else if (difficultyMode == "3")
+            {
+                a = random.Next(1, 101); // Generates a random number between 1 and 100
+                b = random.Next(1, 101); // Generates a random number between 1 and 100
+            }
+            else
+            {
+                Console.WriteLine("Invalid difficulty mode selected. Please try again.");
+            }
             Console.WriteLine($"Welcome to the Addition Game! The numbers are {a} and {b}.");
             result = a + b;
             Console.WriteLine($"{a} + {b} = ?");
@@ -279,6 +315,22 @@ int SelectRandomGame()
             }
             break;
         case 2:
+            a = random.Next(1, 11); // Generates a random number between 1 and 10
+            b = random.Next(1, 11); // Generates a random number between 1 and 10
+            if (difficultyMode == "2")
+            {
+                a = random.Next(1, 51); // Generates a random number between 1 and 50
+                b = random.Next(1, 51); // Generates a random number between 1 and 50
+            }
+            else if (difficultyMode == "3")
+            {
+                a = random.Next(1, 101); // Generates a random number between 1 and 100
+                b = random.Next(1, 101); // Generates a random number between 1 and 100
+            }
+            else
+            {
+                Console.WriteLine("Invalid difficulty mode selected. Please try again.");
+            }
             result = a - b;
             if (a < b)
             {
@@ -305,12 +357,21 @@ int SelectRandomGame()
             }
             break;
         case 4:
-            Console.WriteLine($"Welcome to the Division Game! The numbers are {a} and {b}.");
-            if (b > a)
+            int maxDividend = 100;
+            int maxDivisor = 10;
+            if (difficultyMode == "2")
             {
-                b = a;
+                maxDivisor = 50;
             }
-            result = a / b;
+            else if (difficultyMode == "3")
+            {
+                maxDivisor = 100;
+            }
+            var (dividend, divisor, quotient) = GenerateDivisionOperands(maxDividend, maxDivisor);
+            a = dividend;
+            b = divisor;
+            result = quotient;
+            Console.WriteLine($"Welcome to the Division Game! The numbers are {a} and {b}.");
             Console.WriteLine($"{a} / {b} = ?");
             Console.WriteLine("Please enter your guess: ");
             guess = Console.ReadLine();
@@ -329,8 +390,6 @@ int SelectRandomGame()
 }
 string ChooseDifficulty()
 {
-    int a = 0;
-    int b = 0;
     Console.WriteLine("Please choose from the following difficulty options: ");
     Console.WriteLine("1. Easy");
     Console.WriteLine("2. Medium");
@@ -338,22 +397,7 @@ string ChooseDifficulty()
     difficultyMode = Console.ReadLine();
     if (difficultyMode != null)
     {
-        if (difficultyMode == "1")
-        {
-            a = random.Next(1, 11); // Generates a random number between 1 and 10
-            b = random.Next(1, 11); // Generates a random number between 1 and 10
-        }
-        else if (difficultyMode == "2")
-        {
-            a = random.Next(1, 51); // Generates a random number between 1 and 50
-            b = random.Next(1, 51); // Generates a random number between 1 and 50
-        }
-        else if (difficultyMode == "3")
-        {
-            a = random.Next(1, 101); // Generates a random number between 1 and 100
-            b = random.Next(1, 101); // Generates a random number between 1 and 100
-        }
-        else
+        if (difficultyMode != "1" && difficultyMode != "2" && difficultyMode != "3")
         {
             Console.WriteLine("Invalid difficulty mode selected. Please try again.");
         }
@@ -376,17 +420,18 @@ void ContinueGame()
         {
             continueGame = Console.ReadLine().ToUpper();
             if (continueGame == "N")
-                {
-                    Console.WriteLine("Thank you for playing! Goodbye!");
-                    Environment.Exit(0);
-                }
-                SelectGameType();
-                GameStatistics();
-                ContinueGame();
+            {
+                Console.WriteLine("Thank you for playing! Goodbye!");
+                Environment.Exit(0);
+            }
+            SelectGameType();
+            GameStatistics();
+            ContinueGame();
 
         }
         while (continueGame != "Y" || continueGame != "N");
     }
 
 }
+
 
